@@ -1,38 +1,33 @@
 package com.Backend;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import org.hibernate.annotations.Type;
+
+import java.util.UUID;
+
+import javax.persistence.Column;
+
 @Entity 
-public class User {
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Integer id;
+public class User{
 
-	private String name;
+    @Id
+    @Type (type = "uuid-char")
+    public UUID id;
+	@Column
+	public String name;
+	@Column
+	public String email;
+	// @Column
+	// public String password; using bcrypt to save it
 
-	private String email;
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
+	//TODO: ACL fields
+	
+//TODO: comment the setters after testing
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public String getEmail() {
-		return email;
 	}
 
 	public void setEmail(String email) {
