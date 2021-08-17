@@ -1,4 +1,6 @@
-package com.Backend;
+package com.Backend.Infraestructure;
+
+import com.Backend.Domain.User;
 
 import org.springframework.data.repository.CrudRepository;
 

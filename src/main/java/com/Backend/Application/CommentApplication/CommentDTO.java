@@ -1,4 +1,4 @@
-package com.Backend;
+package com.Backend.Application.CommentApplication;
 
 import java.util.Date;
 import java.util.UUID;

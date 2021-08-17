@@ -1,6 +1,9 @@
-package com.Backend;
+package com.Backend.Controller;
 
 import java.util.UUID;
+
+import com.Backend.Domain.User;
+import com.Backend.Infraestructure.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

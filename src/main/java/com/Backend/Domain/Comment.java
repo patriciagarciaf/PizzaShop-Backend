@@ -1,4 +1,4 @@
-package com.Backend;
+package com.Backend.Domain;
 
 import java.util.Date;
 import java.util.UUID;

@@ -1,4 +1,4 @@
-package com.Backend;
+package com.Backend.Domain;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;

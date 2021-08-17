@@ -1,4 +1,4 @@
-package com.Backend;
+package com.Backend.Application.CommentApplication;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
