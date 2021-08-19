@@ -1,1 +1,0 @@
-implementar mailchimp como método para validar emails
