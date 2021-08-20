@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-public @NoArgsConstructor @Getter @Setter  class IngredientDTO {
+public @NoArgsConstructor @Getter @Setter class IngredientDTO{
     private UUID id;
     private String name;
     private Float price;

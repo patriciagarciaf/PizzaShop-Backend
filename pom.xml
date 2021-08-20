@@ -79,6 +79,13 @@
             <artifactId>modelmapper</artifactId>
             <version>2.4.2</version>
         </dependency>
+		
+		<!-- Dependencia de seguridad -->
+		<!-- <dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency> -->
+
 	</dependencies>
 
 	<build>

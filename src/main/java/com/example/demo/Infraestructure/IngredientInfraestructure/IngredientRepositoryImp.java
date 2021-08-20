@@ -10,14 +10,14 @@ import com.example.demo.Domain.IngredientDomain.Ingredient;
 import com.example.demo.Domain.IngredientDomain.IngredientRepository;
 
 //import lombok.*;
-import lombok.extern.slf4j.Slf4j;
+// import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
 // import org.springframework.data.domain.PageRequest;
 // import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
-@Slf4j
+// @Slf4j
 @Repository
 public class IngredientRepositoryImp implements IngredientRepository {
 

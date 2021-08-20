@@ -26,7 +26,7 @@ public @NoArgsConstructor abstract class EntityBase {
     @Getter @Setter
     public UUID id;
 
-    public void Validate(){
+    public void validate(){
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator= factory.getValidator();
         Set<ConstraintViolation<EntityBase>> violations = validator.validate(this);
