@@ -1,3 +1,4 @@
+package com.example.demo.core;
 // package com.example.demo.Core;
 
 // import java.security.SecureRandom;

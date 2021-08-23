@@ -1,5 +1,7 @@
 package com.example.demo.Controller;
 
+import javax.validation.Valid;
+
 //import java.security.SecureRandom;
 
 import com.example.demo.Application.UserApplication.CreateOrUpdateUserDTO;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     private final UserApplication userApplication;
+	//private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
     UserController(final UserApplication userApplication) {
@@ -27,8 +30,9 @@ public class UserController {
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> add(@RequestBody final CreateOrUpdateUserDTO dto){
-        UserDTO userApplication = this.userApplication.addClient(dto);
+    public ResponseEntity<?> add(@Valid @RequestBody final CreateOrUpdateUserDTO userDto){
+    //    userDto.setPassword(bCryptPasswordEncoder.encode(userDto.getPassword()));
+        UserDTO userApplication = this.userApplication.addClient(userDto);
         return ResponseEntity.status(201).body(userApplication);
     }
 }

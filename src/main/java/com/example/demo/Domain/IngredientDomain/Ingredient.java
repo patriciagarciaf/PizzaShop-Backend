@@ -8,7 +8,8 @@ import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import com.example.demo.Core.EntityBase;
+
+import com.example.demo.core.EntityBase;
 
 
 @Entity

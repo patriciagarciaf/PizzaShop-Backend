@@ -1,4 +1,4 @@
-package com.example.demo.Core;
+package com.example.demo.core;
 
 import java.util.Set;
 import java.util.UUID;

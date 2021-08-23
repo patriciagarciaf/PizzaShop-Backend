@@ -1,7 +1,7 @@
 package com.example.demo.Domain.UserDomain;
 
 public enum Roles {
-    CLIENT,
+    USER,
     EMPLOYEE,
     ADMIN
   }

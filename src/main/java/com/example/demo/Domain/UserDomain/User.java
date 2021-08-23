@@ -5,7 +5,7 @@ import javax.persistence.Enumerated;
 
 import javax.validation.constraints.*;
 
-import com.example.demo.Core.EntityBase;
+import com.example.demo.core.EntityBase;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
