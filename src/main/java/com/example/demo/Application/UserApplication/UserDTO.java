@@ -4,9 +4,7 @@ import java.util.UUID;
 
 import com.example.demo.Domain.UserDomain.Roles;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 public @NoArgsConstructor @Getter @Setter class UserDTO {
     private UUID id;

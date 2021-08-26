@@ -1,12 +1,13 @@
 package com.example.demo.core.Exceptions;
 
-public class NotFoundException extends RuntimeException{
+public class NotFoundException extends HttpException {
 
-    public NotFoundException(){
+    public NotFoundException() {
         this("Not found exception");
     }
-    public NotFoundException(String message){
-        super(message);
+
+    public NotFoundException(String message) {
+        super(404, message);
     }
-    
+
 }

@@ -1,25 +1,29 @@
 package com.example.demo.Domain.IngredientDomain;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 import com.example.demo.core.EntityBase;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
-public @NoArgsConstructor @Getter @Setter class Ingredient extends EntityBase{
+public @NoArgsConstructor @Getter @Setter class Ingredient extends EntityBase {
 
-
-    @Column (nullable = false, unique = true) //Hace que no se realice ninguna validación a la base de datos
+    @NotBlank
+    @Size(min = 3, max = 255)
+    @Column(nullable = false, unique = true) 
     public String name;
 
-    @Column (nullable = false) //Hace que no se realice ninguna validación a la base de datos
+    @DecimalMin(value = "0.0", inclusive = false)
+    @Column(nullable = false)
     public BigDecimal price;
 
 }

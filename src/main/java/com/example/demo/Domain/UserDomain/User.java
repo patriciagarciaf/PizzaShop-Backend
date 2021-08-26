@@ -26,7 +26,7 @@ public @NoArgsConstructor @Getter @Setter class User extends EntityBase{
 	@Column (nullable = false)
 	private String surname;
 
-	@NotNull
+	//@NotNull
 	@Email
 	@Column(unique = true)
 	private String email;

@@ -1,13 +1,12 @@
 package com.example.demo.Application.IngredientApplication;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-public @NoArgsConstructor @Getter @Setter class IngredientDTO{
+public @NoArgsConstructor @Getter @Setter class IngredientDTO {
     private UUID id;
     private String name;
-    private Float price;
+    private BigDecimal price;
 }

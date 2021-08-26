@@ -1,14 +1,14 @@
 package com.example.demo.core.Exceptions;
 
-public class InternalServerErrorException extends RuntimeException{
+public class InternalServerErrorException extends HttpException {
     private final InternalServerErrorEnum internalServerErrorEnum;
 
-    public InternalServerErrorException(InternalServerErrorEnum internalServerErrorEnum){
-        super("Internal Server Error");
+    public InternalServerErrorException(InternalServerErrorEnum internalServerErrorEnum) {
+        super(500, "Internal Server Error");
         this.internalServerErrorEnum = internalServerErrorEnum;
     }
 
-    public final InternalServerErrorEnum getInternalServerErrorEnum(){
+    public final InternalServerErrorEnum getInternalServerErrorEnum() {
         return this.internalServerErrorEnum;
     }
 }

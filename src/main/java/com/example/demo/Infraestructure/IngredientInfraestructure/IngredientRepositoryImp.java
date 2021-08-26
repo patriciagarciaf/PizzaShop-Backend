@@ -1,61 +1,50 @@
 package com.example.demo.Infraestructure.IngredientInfraestructure;
 
+import java.util.*;
 
-// import java.util.List;
-// import java.util.Optional;
-// import java.util.UUID;
-
-import com.example.demo.Domain.IngredientDomain.Ingredient;
-
-import com.example.demo.Domain.IngredientDomain.IngredientRepository;
-
-//import lombok.*;
-// import lombok.extern.slf4j.Slf4j;
+import com.example.demo.Domain.IngredientDomain.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.data.domain.PageRequest;
-// import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
-// @Slf4j
 @Repository
-public class IngredientRepositoryImp implements IngredientRepository {
+public class IngredientRepositoryImp implements IngredientRepositoryWrite, IngredientRepositoryRead {
 
-    private final IngredientJPARepository ingredientJPARepository; // creas una instancia del jpa repository
+    private final IngredientRepositoryJPA ingredientRepositoryJPA;
 
     @Autowired
-    // constructor
-    public IngredientRepositoryImp(final IngredientJPARepository ingredientJPARepository) {
-        this.ingredientJPARepository = ingredientJPARepository;
+    public IngredientRepositoryImp(IngredientRepositoryJPA ingredientRepositoryJPA) {
+        this.ingredientRepositoryJPA = ingredientRepositoryJPA;
     }
 
     @Override
     public void add(Ingredient ingredient) {
-        this.ingredientJPARepository.save(ingredient);
-    //    log.error("Ha ocurrido un problema al introducir una pizza");
+        this.ingredientRepositoryJPA.save(ingredient);
     }
 
-    // @Override
-    // public Optional<Ingredient> findById(UUID id) {
-    //     return this.ingredientJPARepository.findById(id);
-    // }
+    @Override
+    public Optional<Ingredient> findById(UUID id) {
+        return this.ingredientRepositoryJPA.findById(id);
+    }
 
-    // @Override
-    // public void update(Ingredient ingredient) {
-    //     this.ingredientJPARepository.save(ingredient);
-    // }
+    @Override
+    public void update(Ingredient ingredient) {
+        this.ingredientRepositoryJPA.save(ingredient);
+    }
 
-    // @Override
-    // public void delete(Ingredient ingredient) {
-    //     this.ingredientJPARepository.delete(ingredient);
-    // }
+    @Override
+    public void delete(Ingredient ingredient) {
+        this.ingredientRepositoryJPA.delete(ingredient);
+    }
 
-    // @Override
-    // public List<IngredientProjection> getAll(String name, int page, int size) {
-    //     return this.ingredientJPARepository.findByCriteria(
-    //             name,
-    //             PageRequest.of(page, size, Sort.by("name").descending())
-    //     );
-    // }
+    @Override
+    public List<IngredientProjection> getAll(String name, int page, int size) {
+        return this.ingredientRepositoryJPA.findByCriteria(name, PageRequest.of(page, size));
+    }
 
+    @Override
+    public boolean exists(String name) {
+        return this.ingredientRepositoryJPA.exists(name);
+    }
 }
