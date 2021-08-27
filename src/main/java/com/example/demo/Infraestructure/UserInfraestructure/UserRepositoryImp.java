@@ -1,5 +1,8 @@
 package com.example.demo.Infraestructure.UserInfraestructure;
 
+import java.util.Optional;
+import java.util.UUID;
+
 import com.example.demo.Domain.UserDomain.*;
 
 import org.springframework.stereotype.Repository;
@@ -17,6 +20,16 @@ public class UserRepositoryImp implements UserRepositoryWrite{   //, UserReposit
 
     @Override
     public void add(User user) {
+        this.userRepositoryJPA.save(user);
+    }
+
+    @Override
+    public Optional<User>findById(UUID id) {
+        return this.userRepositoryJPA.findById(id);
+    }
+
+    @Override
+    public void update(User user) {
         this.userRepositoryJPA.save(user);
     }
 

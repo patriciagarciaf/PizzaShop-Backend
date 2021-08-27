@@ -55,11 +55,12 @@ public class IngredientApplicationImp extends ApplicationBase<Ingredient, UUID> 
     }
 
     @Override
-    public void update(UUID id, CreateOrUpdateIngredientDTO dtos) {
+    public void update(UUID id, CreateOrUpdateIngredientDTO dto) {
        
-        Ingredient ingredient = modelMapper.map(dtos, Ingredient.class);
+        Ingredient ingredient = modelMapper.map(dto, Ingredient.class);
         ingredient.setId(this.findById(id).getId());
         //TODO: Verify the handling of constraintvalidationnerror
+        //TODO: Verify updating ingredient correctly
         //ingredient.validate("name", ingredient.getName(), (name)-> this.ingredientWriteRepository.exists(name));
         ingredient.validate();
         this.ingredientRepositoryWrite.update(ingredient);

@@ -1,7 +1,6 @@
 package com.example.demo.Domain.UserDomain;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.*;
 
 import javax.validation.constraints.*;
 
@@ -36,7 +35,8 @@ public @NoArgsConstructor @Getter @Setter class User extends EntityBase{
 
 
 	@Column //(nullable = false)
-	@Enumerated(EnumType.STRING)
+	//@Enumerated(EnumType.STRING)
+	@NotNull
 	private Roles role;
 
 }
