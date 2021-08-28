@@ -1,7 +1,7 @@
 package com.example.demo.Application.UserApplication;
 
-import com.example.demo.core.ApplicationBase;
 import com.example.demo.Domain.UserDomain.*;
+import com.example.demo.core.ApplicationBase;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
