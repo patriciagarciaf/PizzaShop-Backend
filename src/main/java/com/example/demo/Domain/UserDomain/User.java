@@ -1,17 +1,16 @@
 package com.example.demo.Domain.UserDomain;
 
-import javax.persistence.*;
-
-import javax.validation.constraints.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import com.example.demo.core.EntityBase;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
 
 @Entity
 public @NoArgsConstructor @Getter @Setter class User extends EntityBase{

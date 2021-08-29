@@ -39,7 +39,7 @@ public class ImageApplicationImp implements ImageApplication{
         image.validate();
         
         this.imageRepository.save(image);
-        this.template.expire(image.getId(), 15, TimeUnit.SECONDS);
+        // this.template.expire(image.getId(), 15, TimeUnit.SECONDS);
         
         logger.info(serializeObject(image, "added"));
         return modelMapper.map(image, ImageDTO.class);
