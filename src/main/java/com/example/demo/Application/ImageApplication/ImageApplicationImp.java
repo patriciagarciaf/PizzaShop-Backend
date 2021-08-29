@@ -1,9 +1,16 @@
 package com.example.demo.Application.ImageApplication;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.Transformation;
+import com.cloudinary.utils.ObjectUtils;
 import com.example.demo.Domain.ImageDomain.Image;
 import com.example.demo.Infraestructure.ImageInfrastruture.ImageApplication;
 import com.example.demo.Infraestructure.ImageInfrastruture.ImageRepository;
@@ -13,6 +20,7 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class ImageApplicationImp implements ImageApplication{
@@ -34,13 +42,11 @@ public class ImageApplicationImp implements ImageApplication{
     
     @Override
     public ImageDTO save(CreateOrUpdateImageDTO dto) {
+
         Image image = modelMapper.map(dto, Image.class);
         image.setId(UUID.randomUUID());
         image.validate();
-        
         this.imageRepository.save(image);
-        // this.template.expire(image.getId(), 15, TimeUnit.SECONDS);
-        
         logger.info(serializeObject(image, "added"));
         return modelMapper.map(image, ImageDTO.class);
     } 
@@ -56,5 +62,13 @@ public class ImageApplicationImp implements ImageApplication{
         return String.format("Image {id: %s, data: %s} has been %s succesfully.",
                             image.getId(), image.getData(),
                             msg);
+    }
+
+    public File convert(MultipartFile multipartFile) throws IOException {
+        File file = new File(multipartFile.getOriginalFilename());
+        FileOutputStream fo = new FileOutputStream(file);
+        fo.write(multipartFile.getBytes());
+        fo.close();
+        return file;
     }
 }

@@ -11,5 +11,9 @@ public @Getter @Setter @NoArgsConstructor class ImageDTO {
     private UUID id;
 
     private byte[] data;
+
+    private String cloudId;
+    
+    private String cloudUrl;
     
 }
