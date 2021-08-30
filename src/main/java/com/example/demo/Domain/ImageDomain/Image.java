@@ -19,11 +19,7 @@ import lombok.Setter;
 public @Getter @Setter @NoArgsConstructor class Image extends EntityBase{
 
     @Size(min = 1)
-    // @UniqueElements
     private byte[] data;
-
-    // @TimeToLive
-    // private long TTL=60*60*24;
 
     // // @NotBlank
     // private String cloudId;

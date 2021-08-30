@@ -12,7 +12,6 @@ public @Getter @Setter @NoArgsConstructor class ImageDTO {
 
     private UUID id;
 
-
     // private String cloudId; EN PIZZA
     
     // private String cloudUrl;

@@ -1,8 +1,5 @@
 package com.example.demo.Application.ImageApplication;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.UUID;
 
 import com.example.demo.Domain.ImageDomain.Image;
@@ -14,7 +11,6 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 
 @Service
@@ -39,7 +35,6 @@ public class ImageApplicationImp extends ApplicationBase<Image, UUID> implements
     
     @Override
     public ImageDTO save(CreateOrUpdateImageDTO dto) {
-
         Image image = modelMapper.map(dto, Image.class);
         image.setId(UUID.randomUUID());
         image.validate();
@@ -51,9 +46,8 @@ public class ImageApplicationImp extends ApplicationBase<Image, UUID> implements
     
     @Override
     public ImageDTOBytes get(UUID id) {
-        
         Image image= this.findById(id);
-        image.validate();
+        // image.validate();
         return this.modelMapper.map(image, ImageDTOBytes.class);
     }
 
@@ -64,11 +58,11 @@ public class ImageApplicationImp extends ApplicationBase<Image, UUID> implements
                             msg);
     }
 
-    public File convert(MultipartFile multipartFile) throws IOException {
-        File file = new File(multipartFile.getOriginalFilename());
-        FileOutputStream fo = new FileOutputStream(file);
-        fo.write(multipartFile.getBytes());
-        fo.close();
-        return file;
-    }
+    // public File convert(MultipartFile multipartFile) throws IOException {
+    //     File file = new File(multipartFile.getOriginalFilename());
+    //     FileOutputStream fo = new FileOutputStream(file);
+    //     fo.write(multipartFile.getBytes());
+    //     fo.close();
+    //     return file;
+    // }
 }

@@ -19,17 +19,16 @@ public class ImageRepositoryImp implements ImageRepository{
 
     Image image;
     private final RedisTemplate<String, byte[]> template;
+
     public ImageRepositoryImp(final RedisTemplate<String, byte[]> template){
         this.template=template;
     }
-    // BoundValueOperations<String, String> boundValueOperations= this.template.boundValueOps(key);
 
 
     @Override
-    public void save(Image image) {//TRYCATCH
-
+    public void save(Image image) {
         try {
-            this.template.opsForValue().set(image.getId().toString(), image.getData(), Duration.ofMinutes(20));
+            this.template.opsForValue().set(image.getId().toString(), image.getData(), Duration.ofDays(1));
         }catch (Exception e) {
             throw new InternalServerErrorException(InternalServerErrorEnum.REDIRECT);
         } finally{

@@ -1,9 +1,5 @@
 package com.example.demo.Configuration;
 
-import java.util.Map;
-
-import com.cloudinary.utils.ObjectUtils;
-
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,37 +16,26 @@ public class RedisConfiguration {
 
     @Bean
     JedisConnectionFactory jedisConnectionFactory() {
-        // try {
-        //     JedisConnectionFactory jedisConnectionFactory=new JedisConnectionFactory();
-        // } catch (RedisConnectionFailureException e) {
-        //     e.printStackTrace();
-        // }
         return new JedisConnectionFactory();
     }
 
 
     @Bean
     public RedisTemplate<String, byte[]> redisTemplate() {
-        // try {
             RedisTemplate<String, byte[]> template = new RedisTemplate<>();
             template.setConnectionFactory(jedisConnectionFactory());
             template.setKeySerializer(new StringRedisSerializer());
             template.setValueSerializer(new ByteSerializer());
             return template;
-        // } catch (RedisConnectionFailureException e) {
-        //     e.printStackTrace();
-        // }
-        // return null;
     }
 
-    //scope por conexion/request
 
-        static final Map config= ObjectUtils.asMap(
-            "cloud_name", System.getenv("cloud_name"),
-            "api_key", System.getenv("api_key"),
-            "api_secret", System.getenv("api_secret"),
-            "secure", true
-        );
+        // static final Map config= ObjectUtils.asMap(
+        //     "cloud_name", System.getenv("cloud_name"),
+        //     "api_key", System.getenv("api_key"),
+        //     "api_secret", System.getenv("api_secret"),
+        //     "secure", true
+        // );
 
 } 
 
