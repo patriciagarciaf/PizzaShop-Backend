@@ -1,17 +1,12 @@
 package com.example.demo.Controller;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.Map;
 import java.util.UUID;
 
 import javax.validation.Valid;
 
-import com.cloudinary.Cloudinary;
-import com.cloudinary.Transformation;
-import com.cloudinary.utils.ObjectUtils;
 import com.example.demo.Application.ImageApplication.CreateOrUpdateImageDTO;
-import com.example.demo.Application.ImageApplication.ImageApplicationImp;
+import com.example.demo.Application.ImageApplication.ImageApplication;
 import com.example.demo.Application.ImageApplication.ImageDTO;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,30 +24,30 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/api/v1/images")
 public class ImageController {
-    private final ImageApplicationImp imageApplicationImp;
+    private final ImageApplication imageApplication;
  
     @Autowired
-    public ImageController(ImageApplicationImp imageApplicationImp) {
-        this.imageApplicationImp = imageApplicationImp;
+    public ImageController(ImageApplication imageApplication) {
+        this.imageApplication = imageApplication;
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> create(@Valid @RequestParam("image") MultipartFile file) throws IOException {
 
-        Cloudinary cloudinary=new Cloudinary();
-        File fileCloudinary=imageApplicationImp.convert(file);
-        Map result= cloudinary.uploader().upload(fileCloudinary, ObjectUtils.emptyMap());
-        String format="png";
-        Transformation transformation= new Transformation().crop("fill");
+        // Cloudinary cloudinary=new Cloudinary();
+        // File fileCloudinary=imageApplicationImp.convert(file);
+        // Map result= cloudinary.uploader().upload(fileCloudinary, ObjectUtils.emptyMap());
+        // String format="png";
+        // Transformation transformation= new Transformation().crop("fill");
 
         CreateOrUpdateImageDTO dto = new CreateOrUpdateImageDTO();
         dto.setData(file.getBytes());
-        dto.setCloudId((String) result.get("public_id"));
-        String cloudUrl= cloudinary.url().secure(true).format(format)
-        .transformation(transformation).publicId(dto.getCloudId()).generate();
-        dto.setCloudUrl(cloudUrl);
+        // dto.setCloudId((String) result.get("public_id"));
+        // String cloudUrl= cloudinary.url().secure(true).format(format)
+        // .transformation(transformation).publicId(dto.getCloudId()).generate();
+        // dto.setCloudUrl(cloudUrl);
 
-        ImageDTO imageDto = imageApplicationImp.save(dto);
+        ImageDTO imageDto = imageApplication.save(dto);
 
         return ResponseEntity.status(201).body(imageDto);
     }
@@ -61,7 +56,7 @@ public class ImageController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE, path = "/{id}")
     public ResponseEntity<?> get(@Valid @PathVariable UUID id) {
 
-        ImageDTO imageDto = imageApplicationImp.get(id);
+        ImageDTO imageDto = this.imageApplication.get(id);
         return ResponseEntity.status(HttpStatus.OK)
         .body(imageDto);
     }
