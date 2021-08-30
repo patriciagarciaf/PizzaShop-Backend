@@ -16,6 +16,7 @@ public @Getter @Setter @NoArgsConstructor abstract class EntityBase {
 
     @Id
     @Type(type = "uuid-binary")
+    @Column(columnDefinition = "binary(16)")
     public UUID id;
 
     public void validate() {
@@ -40,6 +41,7 @@ public @Getter @Setter @NoArgsConstructor abstract class EntityBase {
         }
     }
 
+    
     @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof EntityBase)) {

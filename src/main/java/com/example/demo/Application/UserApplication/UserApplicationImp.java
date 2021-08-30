@@ -1,72 +1,86 @@
 package com.example.demo.Application.UserApplication;
 
-import com.example.demo.Domain.UserDomain.*;
 import com.example.demo.core.ApplicationBase;
-
+import com.example.demo.Domain.UserDomain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.mindrot.jbcrypt.BCrypt;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
-
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class UserApplicationImp extends ApplicationBase<User, UUID> implements UserApplication {
-
+    private final UserRepositoryRead userRepositoryRead;
     private final UserRepositoryWrite userRepositoryWrite;
     private final ModelMapper modelMapper;
     private final Logger logger;
 
     @Autowired
-    public UserApplicationImp(final UserRepositoryWrite userRepositoryWrite, final ModelMapper modelMapper,
-            final Logger logger) {
+    public UserApplicationImp(final UserRepositoryRead userRepositoryRead,
+            final UserRepositoryWrite userRepositoryWrite, final ModelMapper modelMapper, final Logger logger) {
 
         super((id) -> userRepositoryWrite.findById(id));
 
+        this.userRepositoryRead = userRepositoryRead;
         this.userRepositoryWrite = userRepositoryWrite;
         this.modelMapper = modelMapper;
         this.logger = logger;
     }
 
     @Override
-    public UserDTO addClient(CreateOrUpdateUserDTO dto) {
+    public UserDTO addClient(CreateUserDTO dto) {
 
         User user = modelMapper.map(dto, User.class);
         user.setId(UUID.randomUUID());
+        user.setRole(Roles.USER);
         user.validate("email", user.getEmail(), (email) -> this.userRepositoryWrite.exists(email));
         user.setPassword(BCrypt.hashpw(dto.getPassword(), BCrypt.gensalt()));
+        user.setRole(Roles.USER);
 
         this.userRepositoryWrite.add(user);
-        logger.info(this.serializeObject(user, "added."));
+        logger.info(this.serializeObject(user, "has been added"));
 
         return modelMapper.map(user, UserDTO.class);
     }
 
     @Override
     public UserDTO get(UUID id) {
-
         User user = this.findById(id);
         return this.modelMapper.map(user, UserDTO.class);
     }
 
-     @Override
-    public UserDTO update(UUID id, CreateOrUpdateUserDTO dto) {
+    @Override
+    public UserDTO update(UUID id, UpdateUserDTO dto) {
 
-        User user = modelMapper.map(dto, User.class);
-        user.setId(this.findById(id).getId());
-        user.setPassword(BCrypt.hashpw(dto.getPassword(), BCrypt.gensalt()));
-        user.validate();
+        User user = this.findById(id);
+        User newUser = this.modelMapper.map(dto, User.class);
+        newUser.setId(user.getId());
+        newUser.setEmail(user.getEmail());
+        newUser.setRole(user.getRole());
 
-        this.userRepositoryWrite.update(user);
-        logger.info(this.serializeObject(user, "updated."));
+        if (BCrypt.checkpw(newUser.getPassword(), user.getPassword())) {
+            newUser.setPassword(user.getPassword());
+        } else {
+            newUser.setPassword(BCrypt.hashpw(newUser.getPassword(), BCrypt.gensalt()));
+        }
+        newUser.validate();
+        this.userRepositoryWrite.update(newUser);
+        logger.info(this.serializeObject(newUser, "has been updated"));
 
-        return modelMapper.map(user, UserDTO.class);
+        return modelMapper.map(newUser, UserDTO.class);
     }
 
-    private String serializeObject(User user, String msg) {
+    @Override
+    public void delete(UUID id) {
 
-        return String.format("User {id: %s, name: %s, Surname: %s, email: %s} %s succesfully.", user.getId(),
-                user.getName(), user.getSurname(), user.getEmail(), msg);
+        User user = this.findById(id);
+        this.userRepositoryWrite.delete(user);
+        logger.info(this.serializeObject(user, "has been deleted"));
+    }
+
+    @Override
+    public List<UserProjection> getAll(String email, int page, int size) {
+        return this.userRepositoryRead.getAll(email, page, size);
     }
 }

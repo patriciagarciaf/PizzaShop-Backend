@@ -6,7 +6,6 @@ import com.example.demo.core.ApplicationBase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 
@@ -22,12 +21,11 @@ public class IngredientApplicationImp extends ApplicationBase<Ingredient, UUID> 
 
     @Autowired
     public IngredientApplicationImp(final IngredientRepositoryWrite ingredientRepositoryWrite,
-                                    final IngredientRepositoryRead ingredientRepositoryRead,
-                                    final ModelMapper modelMapper,
-                                    final Logger logger){
+            final IngredientRepositoryRead ingredientRepositoryRead, final ModelMapper modelMapper,
+            final Logger logger) {
 
         super((id) -> ingredientRepositoryWrite.findById(id));
-        
+
         this.ingredientRepositoryWrite = ingredientRepositoryWrite;
         this.ingredientRepositoryRead = ingredientRepositoryRead;
         this.modelMapper = modelMapper;
@@ -39,10 +37,10 @@ public class IngredientApplicationImp extends ApplicationBase<Ingredient, UUID> 
 
         Ingredient ingredient = modelMapper.map(dto, Ingredient.class);
         ingredient.setId(UUID.randomUUID());
-        ingredient.validate("name", ingredient.getName(), (name)-> this.ingredientRepositoryWrite.exists(name));
+        ingredient.validate("name", ingredient.getName(), (name) -> this.ingredientRepositoryWrite.exists(name));
 
         this.ingredientRepositoryWrite.add(ingredient);
-        logger.info(this.serializeObject(ingredient, "added."));
+        logger.info(this.serializeObject(ingredient, "has been added"));
 
         return modelMapper.map(ingredient, IngredientDTO.class);
     }
@@ -55,24 +53,21 @@ public class IngredientApplicationImp extends ApplicationBase<Ingredient, UUID> 
     }
 
     @Override
-    public void update(UUID id, CreateOrUpdateIngredientDTO dto) {
-       
-        Ingredient ingredient = modelMapper.map(dto, Ingredient.class);
-        ingredient.setId(this.findById(id).getId());
-        //TODO: Verify the handling of constraintvalidationnerror
-        //TODO: Verify updating ingredient correctly
-        //ingredient.validate("name", ingredient.getName(), (name)-> this.ingredientWriteRepository.exists(name));
-        ingredient.validate();
-        this.ingredientRepositoryWrite.update(ingredient);
-        logger.info(this.serializeObject(ingredient, "updated."));
-    }
+    public IngredientDTO update(UUID id, CreateOrUpdateIngredientDTO dto) {
 
-    @Override
-    public void delete(UUID id) {
+        Ingredient oldIng = this.findById(id);
+        Ingredient newIng = modelMapper.map(dto, Ingredient.class);
+        newIng.setId(id);
 
-        Ingredient ingredient = this.findById(id);
-        this.ingredientRepositoryWrite.delete(ingredient);
-        logger.info(this.serializeObject(ingredient, "deleted."));
+        if (oldIng.getName().equals(dto.getName())) {
+            newIng.validate();
+        } else {
+            newIng.validate("name", newIng.getName(), (name) -> this.ingredientRepositoryWrite.exists(name));
+        }
+        this.ingredientRepositoryWrite.update(newIng);
+        logger.info(this.serializeObject(newIng, "has been updated"));
+
+        return this.modelMapper.map(newIng, IngredientDTO.class);
     }
 
     @Override
@@ -80,11 +75,11 @@ public class IngredientApplicationImp extends ApplicationBase<Ingredient, UUID> 
         return this.ingredientRepositoryRead.getAll(name, page, size);
     }
 
-    private String serializeObject(Ingredient ingredient, String msg){
-        
-        return String.format("Ingredient {id: %s, name: %s, price: %s} has been %s succesfully.",
-                            ingredient.getId(), ingredient.getName(),
-                            ingredient.getPrice().toString(),
-                            msg);
+    @Override
+    public void delete(UUID id) {
+
+        Ingredient ingredient = this.findById(id);
+        this.ingredientRepositoryWrite.delete(ingredient);
+        logger.info(this.serializeObject(ingredient, "has been deleted"));
     }
 }

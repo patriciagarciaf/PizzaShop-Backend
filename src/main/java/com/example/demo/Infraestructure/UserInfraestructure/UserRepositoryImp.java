@@ -1,22 +1,20 @@
 package com.example.demo.Infraestructure.UserInfraestructure;
 
-import java.util.Optional;
-import java.util.UUID;
-
+import java.util.*;
 import com.example.demo.Domain.UserDomain.*;
-
-import org.springframework.stereotype.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Repository;
 
 @Repository
-public class UserRepositoryImp implements UserRepositoryWrite{   //, UserRepositoryRead{
+public class UserRepositoryImp implements UserRepositoryWrite, UserRepositoryRead {
 
     private final UserRepositoryJPA userRepositoryJPA;
 
     @Autowired
-    public UserRepositoryImp(final UserRepositoryJPA userRepositoryJPA){
+    public UserRepositoryImp(final UserRepositoryJPA userRepositoryJPA) {
         this.userRepositoryJPA = userRepositoryJPA;
-    }   
+    }
 
     @Override
     public void add(User user) {
@@ -24,7 +22,7 @@ public class UserRepositoryImp implements UserRepositoryWrite{   //, UserReposit
     }
 
     @Override
-    public Optional<User>findById(UUID id) {
+    public Optional<User> findById(UUID id) {
         return this.userRepositoryJPA.findById(id);
     }
 
@@ -37,8 +35,14 @@ public class UserRepositoryImp implements UserRepositoryWrite{   //, UserReposit
     public boolean exists(String email) {
         return this.userRepositoryJPA.exists(email);
     }
+
+    @Override
+    public void delete(User user) {
+        this.userRepositoryJPA.delete(user);
+    }
+
+    @Override
+    public List<UserProjection> getAll(String email, int page, int size) {
+        return this.userRepositoryJPA.findByCriteria(email, PageRequest.of(page, size));
+    }
 }
-    
-
-    
-

@@ -1,41 +1,31 @@
 package com.example.demo.Domain.UserDomain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-
+import javax.persistence.*;
+import javax.validation.constraints.*;
 import com.example.demo.core.EntityBase;
-
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
-public @NoArgsConstructor @Getter @Setter class User extends EntityBase{
- 
-
-	@NotBlank
-	@Column (nullable = false)
+public @NoArgsConstructor @Getter @Setter class User extends EntityBase {
+	@NotBlank(message = "Name error.")
+	@Column(nullable = false)
 	private String name;
 
-	@NotBlank
-	@Column (nullable = false)
+	@NotBlank(message = "Surname error.")
+	@Column(nullable = false)
 	private String surname;
 
-	//@NotNull
-	@Email
+	@Email(message = "That's not a valid email.")
 	@Column(unique = true)
 	private String email;
 
-	@Column 
-	private String password;	// public String password; using bcrypt to save it
+	@NotNull(message = "Password can't be null.")
+	@Column
+	private String password;
 
-
-	@Column //(nullable = false)
-	//@Enumerated(EnumType.STRING)
-	@NotNull
+	@Column
+	@Enumerated(EnumType.STRING)
+	@NotNull(message = "Role can't be null.")
 	private Roles role;
 
 }
