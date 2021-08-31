@@ -1,20 +1,25 @@
 package com.example.demo.Application.ImageApplication;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Map;
 import java.util.UUID;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.Transformation;
+import com.cloudinary.utils.ObjectUtils;
 import com.example.demo.Domain.ImageDomain.Image;
 import com.example.demo.Domain.ImageDomain.ImageRepository;
 import com.example.demo.core.ApplicationBase;
+import com.example.demo.core.Exceptions.InternalServerErrorEnum;
+import com.example.demo.core.Exceptions.InternalServerErrorException;
 
+import org.apache.commons.io.FileUtils;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 
 @Service
@@ -42,17 +47,32 @@ public class ImageApplicationImp extends ApplicationBase<Image, UUID> implements
         Image image = modelMapper.map(dto, Image.class);
         image.setId(UUID.randomUUID());
         image.validate();
-        // image.validate("data", image.getData().toString(), (data)-> this.imageRepository.exists(data));
         this.imageRepository.save(image);
         this.logger.info(serializeObject(image, "added"));
         return modelMapper.map(image, ImageDTO.class);
     } 
     
     @Override
-    public ImageDTOBytes get(UUID id) {
+    public ImageDTOOut get(UUID id){
         Image image= this.findById(id);
-        // image.validate();
-        return this.modelMapper.map(image, ImageDTOBytes.class);
+        ImageDTOOut imageDTOOut= this.modelMapper.map(image, ImageDTOOut.class);
+        File temporalFile=new File("image.png");
+        try {
+            FileUtils.writeByteArrayToFile(temporalFile, image.getData());
+            Cloudinary cloudinary=new Cloudinary();
+            Map result= cloudinary.uploader().upload(temporalFile, ObjectUtils.emptyMap()); 
+            temporalFile.delete();          
+            imageDTOOut.setCloudId((String) result.get("public_id"));
+            String format="png";
+            Transformation transformation= new Transformation().crop("fill");
+            String cloudUrl= cloudinary.url().secure(true).format(format)
+            .transformation(transformation).publicId(imageDTOOut.getCloudId()).generate();
+            imageDTOOut.setCloudUrl(cloudUrl);
+            
+        } catch (IOException e) {
+            throw new InternalServerErrorException(InternalServerErrorEnum.REDIRECT);
+        }
+        return imageDTOOut;
     }
 
 
@@ -62,11 +82,4 @@ public class ImageApplicationImp extends ApplicationBase<Image, UUID> implements
                             msg);
     }
 
-    public static File convert(MultipartFile multipartFile) throws IOException {
-        File file = new File(multipartFile.getOriginalFilename());
-        FileOutputStream fo = new FileOutputStream(file);
-        fo.write(multipartFile.getBytes());
-        fo.close();
-        return file;
-    }
 }

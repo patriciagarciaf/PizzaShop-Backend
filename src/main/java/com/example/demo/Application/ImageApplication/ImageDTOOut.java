@@ -5,13 +5,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-public @Getter @Setter @NoArgsConstructor class ImageDTOBytes extends ImageDTO{
+public @Getter @Setter @NoArgsConstructor class ImageDTOOut extends ImageDTO{
 
     private byte[] data;
 
-    // private String cloudId; 
+    private String cloudId; 
     
-    // private String cloudUrl;
+    private String cloudUrl;
     
     
 }
