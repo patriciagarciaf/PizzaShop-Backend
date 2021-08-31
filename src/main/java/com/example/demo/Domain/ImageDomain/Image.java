@@ -2,7 +2,6 @@ package com.example.demo.Domain.ImageDomain;
 
 import javax.persistence.Embeddable;
 import javax.persistence.Entity;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 import com.example.demo.core.EntityBase;
@@ -21,9 +20,4 @@ public @Getter @Setter @NoArgsConstructor class Image extends EntityBase{
     @Size(min = 1)
     private byte[] data;
 
-    // @NotBlank
-    // private String cloudId;
-    
-    // @NotBlank
-    // private String cloudUrl;
 }
