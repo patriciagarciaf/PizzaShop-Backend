@@ -4,17 +4,11 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 public interface PizzaProjection {
+    public UUID getId();
 
-    UUID getId();
-
-    String getName();
+    public String getName();
 
     public BigDecimal getPrice();
 
-    public Image getImage();
-
-    public interface Image {
-        public String getPublic_id();
-    };
-
+    //public Image getImage();
 }

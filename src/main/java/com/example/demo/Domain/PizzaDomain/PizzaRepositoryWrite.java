@@ -8,8 +8,12 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface PizzaRepositoryWrite extends FindById<Pizza, UUID>, ExistsByField {
+
     public void add(Pizza pizza);
-    public Optional<Pizza> findById(UUID id);
+
     public void update(Pizza pizza);
+
     public void delete(Pizza pizza);
+
+    public Optional<Pizza> findById(UUID id);
 }

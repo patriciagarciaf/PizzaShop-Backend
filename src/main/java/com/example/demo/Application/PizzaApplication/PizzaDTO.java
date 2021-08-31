@@ -12,8 +12,14 @@ import java.util.UUID;
 
 public @NoArgsConstructor @Getter @Setter
 class PizzaDTO {
-    public UUID id;
-    public String name;
-    public String description;
-    public Set<Ingredient> ingredients = new HashSet<Ingredient>();
+
+    private UUID id;
+
+    private String name;
+
+    //private Image image;
+
+    private BigDecimal price;
+
+    private Set<Ingredient> ingredients = new HashSet<Ingredient>();
 }

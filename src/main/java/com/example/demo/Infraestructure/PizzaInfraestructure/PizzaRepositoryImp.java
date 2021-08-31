@@ -16,10 +16,10 @@ import java.util.UUID;
 @Repository
 public class PizzaRepositoryImp implements PizzaRepositoryWrite, PizzaRepositoryRead {
 
-    private final PizzaJPARepository pizzaJPARepository;
+    private PizzaJPARepository pizzaJPARepository;
 
     @Autowired
-    public PizzaRepositoryImp(final PizzaJPARepository pizzaJPARepository) {
+    public PizzaRepositoryImp(final PizzaJPARepository pizzaJPARepository){
         this.pizzaJPARepository = pizzaJPARepository;
     }
 
@@ -29,13 +29,24 @@ public class PizzaRepositoryImp implements PizzaRepositoryWrite, PizzaRepository
     }
 
     @Override
+    public void update(Pizza pizza) {
+        this.pizzaJPARepository.save(pizza);
+    }
+
+    @Override
     public Optional<Pizza> findById(UUID id) {
         return this.pizzaJPARepository.findById(id);
     }
 
     @Override
-    public void update(Pizza pizza) {
-        this.pizzaJPARepository.save(pizza);
+    public List<PizzaProjection> getAll(String name, int page, int size) {
+        return this.pizzaJPARepository.findByCriteria(name,
+                PageRequest.of(page, size, Sort.by("name").descending()));
+    }
+
+    @Override
+    public boolean exists(String name) {
+        return this.pizzaJPARepository.exists(name);
     }
 
     @Override
@@ -43,15 +54,4 @@ public class PizzaRepositoryImp implements PizzaRepositoryWrite, PizzaRepository
         this.pizzaJPARepository.delete(pizza);
     }
 
-    @Override
-    public List<PizzaProjection> getAll(String name, int page, int size) {
-        return this.pizzaJPARepository.findByCriteria(
-                name,
-                PageRequest.of(page, size, Sort.by("name").descending())
-        );
-    }
-    @Override
-    public boolean exists(String name) {
-        return this.pizzaJPARepository.exists(name);
-    }
 }

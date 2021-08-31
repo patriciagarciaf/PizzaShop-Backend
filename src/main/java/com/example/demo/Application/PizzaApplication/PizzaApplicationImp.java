@@ -89,10 +89,10 @@ public class PizzaApplicationImp extends ApplicationBase<Pizza, UUID> implements
         logger.info(this.serializeObject(pizza, "has been deleted"));
     }
 
-    @Override
-    public CommentDTO addComment(UUID pizzaId, CreateDTOComment createCommentDTO) {
-        return null;
-    }
+    //@Override
+    //public CommentDTO addComment(UUID pizzaId, CreateDTOComment createCommentDTO) {
+    //    return null;
+    //}
 
     //@Override
     //public CommentDTO addComment(UUID pizzaId, CreateDTOComment commentdto) {
@@ -103,13 +103,13 @@ public class PizzaApplicationImp extends ApplicationBase<Pizza, UUID> implements
     //    return CommentService.createDTO(comment);
     //}
 
-    @Override
-    public void removeIngredient(UUID id, UUID ingredientId) {
+    //@Override
+    //public void removeIngredient(UUID id, UUID ingredientId) {
     //    Ingredient ingredient = this.ingredientRepository.findById(ingredientId).orElseThrow();
     //    Pizza pizza = this.pizzaRepository.findById(id).orElseThrow();
     //    pizza.removeIngredient(ingredient);
     //    this.pizzaRepository.update(pizza);
-    }
+    //}
 
 
 
