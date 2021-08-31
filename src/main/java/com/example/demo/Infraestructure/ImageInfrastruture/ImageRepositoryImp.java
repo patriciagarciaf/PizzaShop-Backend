@@ -29,6 +29,9 @@ public class ImageRepositoryImp implements ImageRepository{
     public void save(Image image) {
         try {
             this.template.opsForValue().set(image.getId().toString(), image.getData(), Duration.ofDays(1));
+            // this.template.opsForValue().set("keyId", image.getCloudId().getBytes() , Duration.ofDays(1));
+            // this.template.opsForValue().set("keyUrl", image.getCloudUrl().getBytes() , Duration.ofDays(1));
+
         }catch (Exception e) {
             throw new InternalServerErrorException(InternalServerErrorEnum.REDIRECT);
         } finally{
@@ -47,6 +50,8 @@ public class ImageRepositoryImp implements ImageRepository{
             Image image= new Image();
             image.setId(id);
             image.setData(bytes);
+            // image.setCloudId(this.template.opsForValue().get("keyId", 0, 10000));
+            // image.setCloudUrl(this.template.opsForValue().get("keyUrl", 0, 100000));
             return Optional.of(image);
         } catch (Exception e) {
             throw new InternalServerErrorException(InternalServerErrorEnum.REDIRECT);

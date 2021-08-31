@@ -1,5 +1,8 @@
 package com.example.demo.Application.ImageApplication;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.UUID;
 
 import com.example.demo.Domain.ImageDomain.Image;
@@ -11,6 +14,7 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @Service
@@ -40,7 +44,7 @@ public class ImageApplicationImp extends ApplicationBase<Image, UUID> implements
         image.validate();
         // image.validate("data", image.getData().toString(), (data)-> this.imageRepository.exists(data));
         this.imageRepository.save(image);
-        logger.info(serializeObject(image, "added"));
+        this.logger.info(serializeObject(image, "added"));
         return modelMapper.map(image, ImageDTO.class);
     } 
     
@@ -52,17 +56,17 @@ public class ImageApplicationImp extends ApplicationBase<Image, UUID> implements
     }
 
 
-    private String serializeObject(Image image, String msg){
+    protected String serializeObject(Image image, String msg){
         return String.format("Image {id: %s, data: %s} has been %s succesfully.",
                             image.getId(), image.getData(),
                             msg);
     }
 
-    // public File convert(MultipartFile multipartFile) throws IOException {
-    //     File file = new File(multipartFile.getOriginalFilename());
-    //     FileOutputStream fo = new FileOutputStream(file);
-    //     fo.write(multipartFile.getBytes());
-    //     fo.close();
-    //     return file;
-    // }
+    public static File convert(MultipartFile multipartFile) throws IOException {
+        File file = new File(multipartFile.getOriginalFilename());
+        FileOutputStream fo = new FileOutputStream(file);
+        fo.write(multipartFile.getBytes());
+        fo.close();
+        return file;
+    }
 }
