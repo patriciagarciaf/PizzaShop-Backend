@@ -1,9 +1,12 @@
 package com.example.demo.Infraestructure.ImageInfrastruture;
 
 import java.time.Duration;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.example.demo.Domain.ImageDomain.Image;
 import com.example.demo.Domain.ImageDomain.ImageRepository;
 import com.example.demo.core.Exceptions.InternalServerErrorEnum;
@@ -29,6 +32,11 @@ public class ImageRepositoryImp implements ImageRepository{
     public void save(Image image) {
         try {
             this.template.opsForValue().set(image.getId().toString(), image.getData(), Duration.ofDays(2));
+                Cloudinary cloudinary=new Cloudinary();
+                Map result= cloudinary.uploader().upload(image.getData(), ObjectUtils.emptyMap()); 
+                image.setCloudId((String) result.get("public_id"));
+                // String cloudUrl= cloudinary.url().secure(true).publicId(image.getCloudId()).generate();
+                
         }catch (Exception e) {
             throw new InternalServerErrorException(InternalServerErrorEnum.REDIRECT);
         } finally{

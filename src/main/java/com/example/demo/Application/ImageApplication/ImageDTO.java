@@ -9,6 +9,5 @@ import lombok.Setter;
 public @Getter @Setter @NoArgsConstructor class ImageDTO {
 
     private UUID id;
-
     
 }

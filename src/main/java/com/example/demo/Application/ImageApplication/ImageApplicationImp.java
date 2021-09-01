@@ -56,22 +56,7 @@ public class ImageApplicationImp extends ApplicationBase<Image, UUID> implements
     public ImageDTOOut get(UUID id){
         Image image= this.findById(id);
         ImageDTOOut imageDTOOut= this.modelMapper.map(image, ImageDTOOut.class);
-        File temporalFile=new File("image.png");
-        try {
-            FileUtils.writeByteArrayToFile(temporalFile, image.getData());
-            Cloudinary cloudinary=new Cloudinary();
-            Map result= cloudinary.uploader().upload(temporalFile, ObjectUtils.emptyMap()); 
-            temporalFile.delete();          
-            imageDTOOut.setCloudId((String) result.get("public_id"));
-            String format="png";
-            Transformation transformation= new Transformation().crop("fill");
-            String cloudUrl= cloudinary.url().secure(true).format(format)
-            .transformation(transformation).publicId(imageDTOOut.getCloudId()).generate();
-            imageDTOOut.setCloudUrl(cloudUrl);
-            
-        } catch (IOException e) {
-            throw new InternalServerErrorException(InternalServerErrorEnum.REDIRECT);
-        }
+
         return imageDTOOut;
     }
 
