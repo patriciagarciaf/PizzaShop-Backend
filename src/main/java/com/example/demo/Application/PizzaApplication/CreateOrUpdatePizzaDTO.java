@@ -7,7 +7,7 @@ import lombok.Setter;
 import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.util.HashSet;
+
 import java.util.Set;
 import java.util.UUID;
 
@@ -21,4 +21,7 @@ class CreateOrUpdatePizzaDTO {
     public String name;
     @Column(nullable = false)
     public Set<UUID> ingredients;
+
+    @Column(nullable = false)
+    public UUID imageId;
 }

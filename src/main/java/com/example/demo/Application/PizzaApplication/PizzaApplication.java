@@ -1,11 +1,9 @@
 package com.example.demo.Application.PizzaApplication;
 
-import com.example.demo.Application.CommentApplication.CommentDTO;
-import com.example.demo.Application.CommentApplication.CreateDTOComment;
-import com.example.demo.Domain.PizzaDomain.PizzaProjection;
-
 import java.util.List;
 import java.util.UUID;
+
+import com.example.demo.Domain.PizzaDomain.PizzaProjection;
 
 public interface PizzaApplication {
 
@@ -14,5 +12,4 @@ public interface PizzaApplication {
     public PizzaDTO update (UUID id, CreateOrUpdatePizzaDTO dto);
     public void delete (UUID id);
     public List<PizzaProjection> getAll(String name, int page, int size);
-
 }

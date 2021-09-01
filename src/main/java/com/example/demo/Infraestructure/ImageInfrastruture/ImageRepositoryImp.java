@@ -7,11 +7,13 @@ import java.util.UUID;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import com.example.demo.Application.ImageApplication.ImageDTO;
 import com.example.demo.Domain.ImageDomain.Image;
 import com.example.demo.Domain.ImageDomain.ImageRepository;
 import com.example.demo.core.Exceptions.InternalServerErrorEnum;
 import com.example.demo.core.Exceptions.InternalServerErrorException;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -22,21 +24,20 @@ public class ImageRepositoryImp implements ImageRepository{
 
     Image image;
     private final RedisTemplate<String, byte[]> template;
+    private final ModelMapper modelMapper;
 
-    public ImageRepositoryImp(final RedisTemplate<String, byte[]> template){
+    public ImageRepositoryImp(final RedisTemplate<String, byte[]> template, final ModelMapper modelMapper){
         this.template=template;
+        this.modelMapper=modelMapper;
     }
 
 
     @Override
-    public void save(Image image) {
+    public ImageDTO save(Image image) {
         try {
             this.template.opsForValue().set(image.getId().toString(), image.getData(), Duration.ofDays(2));
                 Cloudinary cloudinary=new Cloudinary();
-                Map result= cloudinary.uploader().upload(image.getData(), ObjectUtils.emptyMap()); 
-                image.setCloudId((String) result.get("public_id"));
-                // String cloudUrl= cloudinary.url().secure(true).publicId(image.getCloudId()).generate();
-                
+                Map result= cloudinary.uploader().upload(image.getData(), ObjectUtils.asMap("public_id", image.getId().toString()));
         }catch (Exception e) {
             throw new InternalServerErrorException(InternalServerErrorEnum.REDIRECT);
         } finally{
@@ -44,6 +45,7 @@ public class ImageRepositoryImp implements ImageRepository{
                 this.template.getConnectionFactory().getConnection().close();
             } 
         }
+        return this.modelMapper.map(image, ImageDTO.class);
     }
     @Override
     public Optional<Image> findById(UUID id) {

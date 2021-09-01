@@ -13,11 +13,11 @@ public interface PizzaIngredientProjection {
 
     public List<Ingredient> getIngredients();
 
-    //public Image getImage();
+    public Image getImage();
 
-    //public interface Image {
-    //    public String getPublic_id();
-    //};
+    public interface Image {
+       public String getPublic_id();
+    };
 
     public interface Ingredient {
 

@@ -28,7 +28,7 @@ public class ImageController {
     private final ImageApplication imageApplication;
  
     @Autowired
-    public ImageController(final ImageApplication imageApplication) {
+    public ImageController(final ImageApplication imageApplication){
         this.imageApplication = imageApplication;
     }
 

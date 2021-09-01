@@ -7,6 +7,5 @@ import lombok.Setter;
 
 public @Getter @Setter @NoArgsConstructor class ImageDTOOut extends ImageDTO{
 
-    private byte[] data;    
-    
+    private byte[] data;
 }

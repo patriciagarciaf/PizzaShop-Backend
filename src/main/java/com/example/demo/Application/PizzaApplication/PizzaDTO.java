@@ -1,5 +1,6 @@
 package com.example.demo.Application.PizzaApplication;
 
+import com.example.demo.Domain.ImageDomain.Image;
 import com.example.demo.Domain.IngredientDomain.Ingredient;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,7 +18,7 @@ class PizzaDTO {
 
     private String name;
 
-    //private Image image;
+    private Image image;
 
     private BigDecimal price;
 

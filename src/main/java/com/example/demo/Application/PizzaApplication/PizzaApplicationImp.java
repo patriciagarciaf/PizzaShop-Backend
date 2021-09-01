@@ -1,8 +1,10 @@
 package com.example.demo.Application.PizzaApplication;
 
-import com.example.demo.Application.CommentApplication.CommentDTO;
-import com.example.demo.Application.CommentApplication.CreateDTOComment;
+import java.util.List;
+import java.util.UUID;
+
 import com.example.demo.Application.IngredientApplication.IngredientApplicationImp;
+import com.example.demo.Domain.ImageDomain.Image;
 import com.example.demo.Domain.IngredientDomain.Ingredient;
 import com.example.demo.Domain.IngredientDomain.IngredientRepositoryRead;
 import com.example.demo.Domain.IngredientDomain.IngredientRepositoryWrite;
@@ -11,14 +13,11 @@ import com.example.demo.Domain.PizzaDomain.PizzaProjection;
 import com.example.demo.Domain.PizzaDomain.PizzaRepositoryRead;
 import com.example.demo.Domain.PizzaDomain.PizzaRepositoryWrite;
 import com.example.demo.core.ApplicationBase;
+
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import javax.xml.stream.events.Comment;
-import java.util.List;
-import java.util.UUID;
 
 @Service
 public class PizzaApplicationImp extends ApplicationBase<Pizza, UUID> implements PizzaApplication {
@@ -33,7 +32,10 @@ public class PizzaApplicationImp extends ApplicationBase<Pizza, UUID> implements
     private final Logger logger;
 
     @Autowired
-    public PizzaApplicationImp(final PizzaRepositoryWrite pizzaRepositoryWrite, final PizzaRepositoryRead pizzaRepositoryRead, final IngredientRepositoryWrite ingredientRepositoryWrite, final IngredientRepositoryRead ingredientRepositoryRead, final ModelMapper modelMapper, final Logger logger, final IngredientApplicationImp ingredientApplicationImp) {
+    public PizzaApplicationImp(final PizzaRepositoryWrite pizzaRepositoryWrite, 
+        final PizzaRepositoryRead pizzaRepositoryRead, final IngredientRepositoryWrite ingredientRepositoryWrite, 
+        final IngredientRepositoryRead ingredientRepositoryRead, final ModelMapper modelMapper, 
+        final Logger logger, final IngredientApplicationImp ingredientApplicationImp) {
         super((id) -> pizzaRepositoryWrite.findById(id));
         this.pizzaRepositoryWrite = pizzaRepositoryWrite;
         this.pizzaRepositoryRead = pizzaRepositoryRead;
@@ -53,6 +55,9 @@ public class PizzaApplicationImp extends ApplicationBase<Pizza, UUID> implements
             pizza.addIngredient(ingredient);
         }
         pizza.setPrice(pizza.calculatePrice());
+        Image image= new Image();
+        image.setId(dto.getImageId());
+        pizza.setImage(image);
         pizza.validate("name", pizza.getName(), (name) -> this.pizzaRepositoryWrite.exists(name));
         this.pizzaRepositoryWrite.add(pizza);
         logger.info(this.serializeObject(pizza, " added."));
@@ -73,12 +78,13 @@ public class PizzaApplicationImp extends ApplicationBase<Pizza, UUID> implements
     @Override
     public PizzaDTO update(UUID id, CreateOrUpdatePizzaDTO dto) {
         Pizza pizza = this.findById(id);
-        pizza.setId(id);
+        Image image=new Image();
         if(this.pizzaRepositoryWrite.exists(pizza.getName())) {
             pizza.validate();
         } else {
             pizza.validate("name", pizza.getName(), (name)-> this.pizzaRepositoryWrite.exists(name));
         }
+        image.setId(dto.getImageId());
         pizza.setName(dto.getName());
         this.pizzaRepositoryWrite.update(pizza);
         logger.info(this.serializeObject(pizza, " updated"));

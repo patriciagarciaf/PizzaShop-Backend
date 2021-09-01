@@ -1,23 +1,27 @@
 package com.example.demo.Domain.PizzaDomain;
 
-import com.example.demo.Domain.IngredientDomain.Ingredient;
-import com.example.demo.core.EntityBase;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.Type;
-
-import javax.persistence.*;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.NotBlank;
-import javax.xml.stream.events.Comment;
-import java.awt.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
+
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotBlank;
+
+import com.example.demo.Domain.ImageDomain.Image;
+import com.example.demo.Domain.IngredientDomain.Ingredient;
+import com.example.demo.core.EntityBase;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "pizzas")
@@ -28,9 +32,9 @@ class Pizza extends EntityBase {
     @Column(nullable = false, name ="name", unique = true)
     private  String name;
 
-    //@Embedded
-    //@Column(name = "image")
-    //private Image image;
+    @Embedded
+    @Column(name = "image")
+    private Image image;
 
     @DecimalMin(value = "0.0", inclusive = false)
     @Column(nullable = false, name ="price")

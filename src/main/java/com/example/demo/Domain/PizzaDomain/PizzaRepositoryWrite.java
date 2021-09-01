@@ -1,6 +1,5 @@
 package com.example.demo.Domain.PizzaDomain;
 
-import com.example.demo.Domain.IngredientDomain.Ingredient;
 import com.example.demo.core.ExistsByField;
 import com.example.demo.core.FindById;
 
