@@ -33,7 +33,7 @@ class Pizza extends EntityBase {
     //private Image image;
 
     @DecimalMin(value = "0.0", inclusive = false)
-    @Column(name ="price")
+    @Column(nullable = false, name ="price")
     private BigDecimal price;
 
     @ManyToMany @JoinTable(name ="pizza_ingredients",

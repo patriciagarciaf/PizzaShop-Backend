@@ -66,61 +66,36 @@ public class PizzaApplicationImp extends ApplicationBase<Pizza, UUID> implements
     }
 
     @Override
+    public List<PizzaProjection> getAll(String name, int page, int size) {
+        return this.pizzaRepositoryRead.getAll(name, page, size);
+    }
+
+    @Override
     public PizzaDTO update(UUID id, CreateOrUpdatePizzaDTO dto) {
-        Pizza oldPiz = this.findById(id);
-        Pizza newPiz = modelMapper.map(dto, Pizza.class);
-        newPiz.setId(id);
-
-        if (oldPiz.getName().equals(dto.getName())) {
-            newPiz.validate();
+        Pizza pizza = this.findById(id);
+        pizza.setId(id);
+        if(this.pizzaRepositoryWrite.exists(pizza.getName())) {
+            pizza.validate();
         } else {
-            newPiz.validate("name", newPiz.getName(), (name) -> this.pizzaRepositoryWrite.exists(name));
+            pizza.validate("name", pizza.getName(), (name)-> this.pizzaRepositoryWrite.exists(name));
         }
-        this.pizzaRepositoryWrite.update(newPiz);
-        logger.info(this.serializeObject(newPiz, "has been updated"));
-
-        return this.modelMapper.map(newPiz, PizzaDTO.class);
+        pizza.setName(dto.getName());
+        this.pizzaRepositoryWrite.update(pizza);
+        logger.info(this.serializeObject(pizza, " updated"));
+        return this.modelMapper.map(pizza, PizzaDTO.class);
     }
 
     @Override
     public void delete(UUID id) {
         Pizza pizza = this.findById(id);
         this.pizzaRepositoryWrite.delete(pizza);
-        logger.info(this.serializeObject(pizza, "has been deleted"));
+        logger.info(this.serializeObject(pizza, " deleted"));
     }
 
-    //@Override
-    //public CommentDTO addComment(UUID pizzaId, CreateDTOComment createCommentDTO) {
-    //    return null;
-    //}
-
-    //@Override
-    //public CommentDTO addComment(UUID pizzaId, CreateDTOComment commentdto) {
-    //    Pizza pizza = this.pizzaRepository.findById(pizzaId).orElseThrow();
-    //    Comment comment = CommentService.create(commentdto);
-    //    pizza.addComment(comment);
-    //    this.pizzaRepository.update(pizza);
-    //    return CommentService.createDTO(comment);
-    //}
-
-    //@Override
-    //public void removeIngredient(UUID id, UUID ingredientId) {
-    //    Ingredient ingredient = this.ingredientRepository.findById(ingredientId).orElseThrow();
-    //    Pizza pizza = this.pizzaRepository.findById(id).orElseThrow();
-    //    pizza.removeIngredient(ingredient);
-    //    this.pizzaRepository.update(pizza);
-    //}
-
-
-
-    public List<PizzaProjection> getAll(String name, int page, int size) {
-    //    return this.pizzaRepository.getAll(name, page, size);
-        return null;
+    public String serializeObject(Pizza pizza, String message){
+        return String.format("Pizza {id: %s, name: %s, price: %s} %s succesfully.",
+                pizza.getId(), pizza.getName(),
+                pizza.getPrice().toString(),
+                message);
     }
-
-   // @Override
-   // public PizzaIngredientProjection getPizzaInfo(UUID id) {
-   //    return this.pizzaRepository.getPizzaInfo(id);
-   // }
-
 }
