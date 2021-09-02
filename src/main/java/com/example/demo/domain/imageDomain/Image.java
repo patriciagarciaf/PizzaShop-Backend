@@ -1,4 +1,4 @@
-package com.example.demo.Domain.ImageDomain;
+package com.example.demo.domain.imageDomain;
 
 import javax.persistence.Embeddable;
 import javax.persistence.Entity;

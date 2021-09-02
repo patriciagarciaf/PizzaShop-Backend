@@ -2,8 +2,9 @@ package com.example.demo.application.imageApplication;
 
 import java.util.UUID;
 
-import com.example.demo.domain.imageDomain.Image;
+
 import com.example.demo.domain.imageDomain.ImageRepository;
+import com.example.demo.Domain.ImageDomain.Image;
 import com.example.demo.core.ApplicationBase;
 
 import org.modelmapper.ModelMapper;
