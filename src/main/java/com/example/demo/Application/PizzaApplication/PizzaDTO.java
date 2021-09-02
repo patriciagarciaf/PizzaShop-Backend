@@ -1,15 +1,16 @@
 package com.example.demo.Application.PizzaApplication;
 
-import com.example.demo.Domain.ImageDomain.Image;
-import com.example.demo.Domain.IngredientDomain.Ingredient;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
+
+import com.example.demo.Application.ImageApplication.ImageDTO;
+import com.example.demo.Domain.IngredientDomain.Ingredient;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 public @NoArgsConstructor @Getter @Setter
 class PizzaDTO {
@@ -18,7 +19,7 @@ class PizzaDTO {
 
     private String name;
 
-    private Image image;
+    private ImageDTO imageDTO;
 
     private BigDecimal price;
 

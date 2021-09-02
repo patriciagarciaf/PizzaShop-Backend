@@ -3,6 +3,7 @@ package com.example.demo.Application.PizzaApplication;
 import java.util.List;
 import java.util.UUID;
 
+import com.example.demo.Application.ImageApplication.ImageDTO;
 import com.example.demo.Application.IngredientApplication.IngredientApplicationImp;
 import com.example.demo.Domain.ImageDomain.Image;
 import com.example.demo.Domain.IngredientDomain.Ingredient;
@@ -57,11 +58,13 @@ public class PizzaApplicationImp extends ApplicationBase<Pizza, UUID> implements
         pizza.setPrice(pizza.calculatePrice());
         Image image= new Image();
         image.setId(dto.getImageId());
-        pizza.setImage(image);
         pizza.validate("name", pizza.getName(), (name) -> this.pizzaRepositoryWrite.exists(name));
         this.pizzaRepositoryWrite.add(pizza);
         logger.info(this.serializeObject(pizza, " added."));
-        return this.modelMapper.map(pizza, PizzaDTO.class);
+        ImageDTO imageDTO=this.modelMapper.map(image, ImageDTO.class);
+        PizzaDTO pizzaDTO= this.modelMapper.map(pizza, PizzaDTO.class);
+        pizzaDTO.setImageDTO(imageDTO);
+        return pizzaDTO;
     }
 
     @Override
@@ -90,7 +93,10 @@ public class PizzaApplicationImp extends ApplicationBase<Pizza, UUID> implements
         pizza.setName(dto.getName());
         this.pizzaRepositoryWrite.update(pizza);
         logger.info(this.serializeObject(pizza, " updated"));
-        return this.modelMapper.map(pizza, PizzaDTO.class);
+        PizzaDTO pizzaDTO= this.modelMapper.map(pizza, PizzaDTO.class);
+        ImageDTO imageDTO=this.modelMapper.map(image, ImageDTO.class);
+        pizzaDTO.setImageDTO(imageDTO);
+        return pizzaDTO;
     }
 
     @Override

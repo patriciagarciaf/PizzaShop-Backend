@@ -1,7 +1,6 @@
 package com.example.demo.Infraestructure.ImageInfrastruture;
 
 import java.time.Duration;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -36,23 +35,34 @@ public class ImageRepositoryImp implements ImageRepository{
     public ImageDTO save(Image image) {
         try {
             this.template.opsForValue().set(image.getId().toString(), image.getData(), Duration.ofDays(2));
-                Cloudinary cloudinary=new Cloudinary();
-                Map result= cloudinary.uploader().upload(image.getData(), ObjectUtils.asMap("public_id", image.getId().toString()));
         }catch (Exception e) {
             throw new InternalServerErrorException(InternalServerErrorEnum.REDIRECT);
         } finally{
             if (!this.template.getConnectionFactory().getConnection().isClosed()){
                 this.template.getConnectionFactory().getConnection().close();
-            } 
+            }
         }
+        uploadToCloudinary(image);
         return this.modelMapper.map(image, ImageDTO.class);
     }
+    
+    
+    public void uploadToCloudinary(Image image){
+        try {
+            Cloudinary cloudinary=new Cloudinary();
+            cloudinary.uploader().upload(image.getData(), ObjectUtils.asMap("public_id", image.getId().toString()));
+        } catch (Exception e) {
+            throw new InternalServerErrorException(InternalServerErrorEnum.REDIRECT);
+        }
+    }
+
+
     @Override
     public Optional<Image> findById(UUID id) {
         try {
            byte[] bytes= this.template.opsForValue().get(id.toString());
             if (bytes==null) {
-                return Optional.of(null);            
+                return Optional.of(null);
             }
             Image image= new Image();
             image.setId(id);
@@ -68,9 +78,9 @@ public class ImageRepositoryImp implements ImageRepository{
     }
 
 
-    @Override
-    public boolean exists(String field) {
-        return this.exists(image.getData().toString());
-    }
+    // @Override
+    // public boolean exists(String field) {
+    //     return this.exists(image.getData().toString());
+    // }
 
 }
