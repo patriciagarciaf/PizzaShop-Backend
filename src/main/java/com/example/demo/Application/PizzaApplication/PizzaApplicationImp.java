@@ -78,13 +78,15 @@ public class PizzaApplicationImp extends ApplicationBase<Pizza, UUID> implements
     @Override
     public PizzaDTO update(UUID id, CreateOrUpdatePizzaDTO dto) {
         Pizza pizza = this.findById(id);
-        Image image=new Image();
+        Image image=pizza.getImage();
         if(this.pizzaRepositoryWrite.exists(pizza.getName())) {
             pizza.validate();
         } else {
             pizza.validate("name", pizza.getName(), (name)-> this.pizzaRepositoryWrite.exists(name));
         }
-        image.setId(dto.getImageId());
+        if (dto.imageId!=null){
+            image.setId(dto.getImageId());
+        }
         pizza.setName(dto.getName());
         this.pizzaRepositoryWrite.update(pizza);
         logger.info(this.serializeObject(pizza, " updated"));

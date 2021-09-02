@@ -2,6 +2,7 @@ package com.example.demo.Domain.ImageDomain;
 
 import javax.persistence.Embeddable;
 import javax.persistence.Entity;
+import javax.persistence.Transient;
 import javax.validation.constraints.Size;
 
 import com.example.demo.core.EntityBase;
@@ -18,6 +19,7 @@ import lombok.Setter;
 public @Getter @Setter @NoArgsConstructor class Image extends EntityBase{
 
     @Size(min = 1)
+    @Transient
     private byte[] data;
 
     @Size(min=1)

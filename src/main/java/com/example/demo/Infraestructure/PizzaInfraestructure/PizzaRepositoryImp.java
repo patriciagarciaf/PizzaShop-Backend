@@ -62,9 +62,9 @@ public class PizzaRepositoryImp implements PizzaRepositoryWrite, PizzaRepository
             //  if (bytes==null) {
             //  }
             image.setData(bytes);
-            Cloudinary cloudinary=new Cloudinary();
-            String cloudUrl= cloudinary.url().secure(true).publicId(image.getId()).generate();
-            image.setUrl(cloudUrl);
+            // Cloudinary cloudinary=new Cloudinary();
+            // String cloudUrl= cloudinary.url().secure(true).publicId(image.getId()).generate();
+            // image.setUrl(cloudUrl);
          } catch (Exception e) {
              throw new InternalServerErrorException(InternalServerErrorEnum.REDIRECT);
          } finally{
