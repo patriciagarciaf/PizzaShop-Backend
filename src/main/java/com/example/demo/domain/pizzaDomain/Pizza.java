@@ -19,7 +19,7 @@ public @NoArgsConstructor @Getter @Setter class Pizza extends EntityBase {
     private String name;
 
     @Embedded
-    @Column(name = "image")
+    // @Column(name = "imageid")
     private Image image;
 
     @DecimalMin(value = "0.0", inclusive = false)

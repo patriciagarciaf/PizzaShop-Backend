@@ -1,19 +1,24 @@
-package com.example.demo.domain.imageDomain;
+package com.example.demo.Domain.ImageDomain;
 
-import javax.persistence.*;
+import javax.persistence.Embeddable;
+import javax.persistence.Entity;
+import javax.persistence.Transient;
 import javax.validation.constraints.Size;
+
 import com.example.demo.core.EntityBase;
+
 import org.springframework.data.redis.core.RedisHash;
-import lombok.*;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @RedisHash("Image")
 @Embeddable
 public @Getter @Setter @NoArgsConstructor class Image extends EntityBase{
+
     @Size(min = 1)
     @Transient
     private byte[] data;
-    @Size(min=1)
-    private String url;
-
 }
